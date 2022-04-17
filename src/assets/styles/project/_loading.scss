@@ -1,0 +1,228 @@
+@use '../global/global' as g;
+
+.loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    background-color: g.$color-white;
+    z-index: 3;
+    @include g.mq(mobile) {
+        align-items: flex-start;
+    }
+
+    &__glasses-wrapper {
+        position: absolute;
+        top: 145px;
+        left: 0;
+        right: 0;
+        width: 167px;
+        height: 63px;
+        overflow: hidden;
+        margin: 0 auto;
+        z-index: 2;
+        opacity: 0;
+        transform: translateY(-30px);
+        @include g.mq(mobile) {
+            top: 155px;
+            width: 120px;
+        }
+    }
+
+    &__glasses-list {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        margin: 0 auto;
+        transform: translateY(-350px);
+        @include g.mq(mobile) {
+            transform: translateY(-277px);
+        }
+
+        &.is-active {
+            transform: translateY(-268px);
+            transition: transform 0.3s;
+            @include g.mq(mobile) {
+                transform: translateY(-218px);
+            }
+        }
+        &.is-active2 {
+            transform: translateY(-182px);
+            transition: transform 0.3s;
+            @include g.mq(mobile) {
+                transform: translateY(-148px);
+            }
+        }
+        &.is-active3 {
+            transform: translateY(-87px);
+            transition: transform 0.3s;
+            @include g.mq(mobile) {
+                transform: translateY(-68px);
+            }
+        }
+        &.is-active4 {
+            transform: translateY(6px);
+            transition: transform 0.3s;
+        }
+    }
+
+    &__img {
+        margin: 0 auto;
+
+        &--human {
+            width: 300px;
+            transform: scale(0);
+            opacity: 0;
+            @include g.mq(mobile) {
+                width: 230px;
+            }
+
+            &.is-active {
+                opacity: 1;
+                transform: scale(1);
+                transition: opacity 0.4s cubic-bezier(0.895, 0.03, 0.685, 0.22), transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            }
+        }
+
+        &--glasses {
+            width: 100%;
+            margin: 0 auto 30px;
+        }
+    }
+
+    &__inner {
+        position: relative;
+        width: 100%;
+        z-index: 3;
+        @include g.mq(mobile) {
+            padding: 30px 0 0;
+        }
+    }
+
+    &__texts {
+        width: 600px;
+        margin: 0 auto;
+        opacity: 0;
+        transform: translate3d(0, 30px, 0);
+        margin: 0 auto 30px;
+        @include g.mq(mobile) {
+            width: 90%;
+        }
+    }
+
+    &__title {
+        text-align: center;
+        color: g.$color-black;
+        font-size: 36px;
+        font-family: g.$font-jp;
+        margin: 0 auto 20px;
+        transform: scale(0);
+        opacity: 0;
+        @include g.mq(mobile) {
+            font-size: g.get_vw(70);
+        }
+
+        &.is-active {
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 0.4s cubic-bezier(0.895, 0.03, 0.685, 0.22), transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+    }
+    &__text {
+        color: g.$color-black;
+        font-size: 20px;
+        font-family: g.$font-jp;
+        line-height: 1.5;
+        @include g.mq(mobile) {
+            font-size: g.get_vw(30);
+        }
+
+        &--big {
+            position: relative;
+            font-size: 26px;
+            display: block;
+            margin: 0 auto 6px;
+            @include g.mq(mobile) {
+                font-size: g.get_vw(33);
+            }
+
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: 0px;
+                left: 0;
+                width: 199px;
+                height: 12px;
+                background-color: g.$color-blue;
+                z-index: -1;
+                @include g.mq(mobile) {
+                    width: g.get_vw(250);
+                    height: 6px;
+                }
+            }
+        }
+    }
+    &__button {
+        position: relative;
+        display: block;
+        width: 150px;
+        padding: 13px 0;
+        margin: 0 auto;
+        opacity: 0;
+        transform: translate3d(0, 30px, 0);
+        @include g.mq(mobile) {
+            width: g.get_vw(350);
+            padding: g.get_vw(30) 0;
+            border-radius: g.get_vw(10);
+            background-color: g.$color-blue;
+        }
+
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            @include g.mq(mobile) {
+                display: none;
+            }
+        }
+        &::before {
+            background-color: g.$color-blue;
+            transition: transform 0.3s cubic-bezier(0.2, 1, 0.7, 1);
+        }
+
+        &::after {
+            border: 1px solid g.$color-blue;
+            transition: transform 0.3s cubic-bezier(0.2, 1, 0.7, 1);
+            transform: scale3d(0.85, 0.65, 1);
+        }
+
+        &:hover {
+            &::before {
+                transform: scale3d(0.9, 0.8, 1);
+                @include g.mq(mobile) {
+                    transform: scale3d(1, 1, 1);
+                }
+            }
+            &::after {
+                transform: scale3d(1, 1, 1);
+            }
+        }
+
+        &--text {
+            position: relative;
+            color: g.$color-white;
+            font-size: 16px;
+            font-family: g.$font-jp;
+            @include g.mq(mobile) {
+                font-size: g.get_vw(30);
+            }
+        }
+    }
+}

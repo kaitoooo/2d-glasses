@@ -1,0 +1,72 @@
+@use '../setting/size';
+@use 'sass:list';
+@use 'sass:math';
+
+// %の取得
+@function get_per($size, $parent: var(--base-size)) {
+    @return calc(#{$size} / #{$parent} * 100%);
+}
+// vwの取得
+@function get_vw($size, $viewport: var(--base-size)) {
+    $rate: list.slash(100, $viewport);
+    @return calc(#{$rate} * #{$size} * 1vw);
+}
+// vhの取得
+@function get_vh($size, $viewport: var(--base-size)) {
+    $rate: list.slash(100, $vieswport);
+    @return calc(#{$rate} * #{$size} * 1vh);
+}
+
+@mixin fluid-type($properties, $min-value, $max-value, $max-vw: 1920px) {
+    @each $property in $properties {
+        #{$property}: $min-value;
+    }
+
+    @media (min-width: size.$min-vw) {
+        @each $property in $properties {
+            #{$property}: calc(#{$min-value} + #{strip-unit($max-value - $min-value)} * (100vw - #{size.$min-vw}) / #{strip-unit(size.$max-vw - size.$min-vw)});
+        }
+    }
+
+    @media (min-width: size.$max-vw) {
+        @each $property in $properties {
+            #{$property}: #{get_vw(strip-unit($max-value))};
+        }
+    }
+}
+@function strip_lh($size, $font-size-list, $line-height-list, $parent: var(--base-size)) {
+    $num: 0;
+    @each $line-height in $line-height-list {
+        $key: index($line-height-list, $line-height);
+        $num: $num + nth($font-size-list, $key) * math.div($line-height - 1, 2);
+    }
+    @return calc((#{$size} / #{$parent} * 100%) - #{$num});
+}
+
+@function strip_lh_vw($size, $font-size-list, $line-height-list, $parent: var(--base-size), $base) {
+    $rate: math.div(100, $base);
+    $num: 0;
+    @each $line-height in $line-height-list {
+        $key: index($line-height-list, $line-height);
+        $font-size: nth($font-size-list, $key);
+        $num: $num + ($rate * $font-size * 1vw) * math.div($line-height - 1, 2);
+    }
+    @return calc((#{$size} / #{$parent} * 100%) - #{$num});
+}
+
+@function strip_lh_fluid($size, $min-value, $max-value, $line-height, $parent: var(--base-size)) {
+    $diff-value: #{strip-unit($max-value - $min-value)};
+    $diff-vw: #{strip-unit(size.$max-vw - size.$min-vw)};
+    @return calc((#{$size} / #{$parent} * 100%) - ((#{$min-value} + #{$diff-value} * (100vw - #{size.$min-vw}) / #{$diff-vw}) * (#{$line-height} - 1) / 2));
+}
+
+@function strip-unit($number) {
+    @if type-of($number) == 'number' and not unitless($number) {
+        @return math.div($number, $number * 0 + 1);
+    }
+    @return $number;
+}
+
+@function get_size_pc($min-value, $max-value, $max-vw: 1920px) {
+    @return calc(#{$min-value} + #{strip-unit($max-value - $min-value)} * (100vw - #{size.$min-vw}) / #{strip-unit(size.$max-vw - size.$min-vw)});
+}
